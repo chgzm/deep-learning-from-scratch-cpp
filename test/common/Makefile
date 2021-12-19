@@ -11,6 +11,8 @@ SRCS += TestMatrix.cpp
 SRCS += TestByteReader.cpp
 SRCS += TestRandom.cpp
 SRCS += TestMmapper.cpp
+SRCS += TestLayers.cpp
+SRCS += Util.cpp
 OBJS := $(SRCS:%.cpp=%.o)
 
 TARGET := gtest
