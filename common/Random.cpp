@@ -18,3 +18,11 @@ std::vector<std::size_t> choice(std::size_t size, std::size_t num) {
     std::vector<std::size_t> ret(v.begin(), v.begin() + num);
     return ret;
 }
+
+double uniform(double start, double stop) {
+    double v = ((double)(rand()) + 1.0) / ((double)(RAND_MAX) + 2.0);
+    v *= (stop - start);
+    return v + start;
+}
+
+

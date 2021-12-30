@@ -6,4 +6,6 @@
 
 std::vector<std::size_t> choice(std::size_t size, std::size_t num);
 
+double uniform(double start, double stop);
+
 #endif

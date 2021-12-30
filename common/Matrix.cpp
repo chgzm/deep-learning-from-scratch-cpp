@@ -4,6 +4,7 @@
 #include <random>
 #include <float.h>
 #include <cstdint>
+#include <cmath>
 
 int initMatrix(Eigen::MatrixXd& m, const std::string& filePath) {
     std::ifstream ifs(filePath);
@@ -35,6 +36,34 @@ int initRowVector(RowVectorXd& v, const std::string& filePath) {
     }
 
     return 0;
+}
+
+static double randNormal() {
+    double r1 = ((double)rand() + 0.5) / ((double)RAND_MAX + 1);
+    double r2 = ((double)rand() + 0.5) / ((double)RAND_MAX + 1);
+    return std::sqrt(-2.0 * std::log(r1)) * std::sin(2.0 * M_PI * r2);
+}
+
+MatrixXd createMatrixXdRandNormal(int rows, int cols) {
+    MatrixXd M(rows, cols);
+    for (int i = 0; i < M.rows(); ++i) {
+        for (int j = 0; j < M.cols(); ++j) {
+            M(i, j) = randNormal();
+        }
+    }
+
+    return M;
+}
+
+MatrixXd createMatrixXdRand(int rows, int cols) {
+    MatrixXd M(rows, cols);
+    for (int i = 0; i < M.rows(); ++i) {
+        for (int j = 0; j < M.cols(); ++j) {
+            M(i, j) = ((double) rand()) / (double) RAND_MAX;
+        }
+    }
+
+    return M;
 }
 
 MatrixXd createMatrixXdBatch(const MatrixXd& M, const std::vector<std::size_t>& index) {

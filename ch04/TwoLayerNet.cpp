@@ -125,7 +125,7 @@ double TwoLayerNet::crossEntropyError(const MatrixXd& Y, const VectorXi& t) {
     static constexpr double delta = 1e-7;
 
     MatrixXd M = Y.array() + delta;
-    M.unaryExpr([](double x) { return std::log(x);});
+    M = M.unaryExpr([](double x) { return std::log(x);});
 
     double sum = 0.0;
     for (int i = 0; i < M.rows(); ++i) {

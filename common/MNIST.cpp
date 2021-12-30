@@ -71,5 +71,9 @@ int MNIST::load(const std::string& imagePath, const std::string& labelPath) {
         return -1;
     }
 
+    if (images_.rows() != labels_.size()) {
+        return -1;
+    }
+
     return 0;
 }

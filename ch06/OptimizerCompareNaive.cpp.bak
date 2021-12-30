@@ -1,0 +1,132 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <Matrix.h>
+#include <Function.h>
+#include <Gnuplot.h>
+#include <Optimizer.h>
+
+static double df_x(double x) {
+    return x / 10.0;
+}
+
+static double df_y(double y) {
+    return 2.0 * y;
+}
+
+static void runSGD() {
+    constexpr double lr = 0.95;
+
+    RowVectorXd x(2);
+    x << -7.0, 2.0;
+    RowVectorXd dx = RowVectorXd::Zero(2);
+
+    FILE* fp = std::fopen("./data/naive_SGD.txt", "w");
+    if (!fp) {
+        std::fprintf(stderr, "Failed to open file.\n");
+        return;
+    }
+
+    SGD<RowVectorXd> sgd(lr);
+    for (int i = 0; i < 30; ++i) {
+        std::fprintf(fp, "%lf %lf\n", x(0), x(1));
+        
+        dx(0) = df_x(x(0));
+        dx(1) = df_y(x(1));
+
+        sgd.update(x, dx);
+    }
+
+    std::fclose(fp);
+}
+
+static void runMomentum() {
+    constexpr double lr = 0.1;
+    constexpr double m = 0.9;
+
+    RowVectorXd x(2);
+    x << -7.0, 2.0;
+    RowVectorXd dx = RowVectorXd::Zero(2);
+
+    FILE* fp = fopen("./data/naive_Momentum.txt", "w");
+    if (!fp) {
+        fprintf(stderr, "Failed to open file.\n");
+        return;
+    }
+
+    Momentum<RowVectorXd> momentum(lr, m);
+    for (int i = 0; i < 30; ++i) {
+        std::fprintf(fp, "%lf %lf\n", x(0), x(1));
+        
+        dx(0) = df_x(x(0));
+        dx(1) = df_y(x(1));
+
+        momentum.update(x, dx);
+    }
+
+    fclose(fp);
+}
+
+static void runAdaGrad() {
+    constexpr double lr = 1.5;
+
+    RowVectorXd x(2);
+    x << -7.0, 2.0;
+    RowVectorXd dx = RowVectorXd::Zero(2);
+
+    FILE* fp = fopen("./data/naive_AdaGrad.txt", "w");
+    if (!fp) {
+        fprintf(stderr, "Failed to open file.\n");
+        return;
+    }
+
+    AdaGrad<RowVectorXd> adaGrad(lr);
+    for (int i = 0; i < 30; ++i) {
+        std::fprintf(fp, "%lf %lf\n", x(0), x(1));
+        
+        dx(0) = df_x(x(0));
+        dx(1) = df_y(x(1));
+
+        adaGrad.update(x, dx);
+    }
+
+    fclose(fp);
+}
+
+static void runAdam() {
+    constexpr double lr = 0.3;
+    constexpr double beta1 = 0.9;
+    constexpr double beta2 = 0.999;
+
+    RowVectorXd x(2);
+    x << -7.0, 2.0;
+    RowVectorXd dx = RowVectorXd::Zero(2);
+
+    FILE* fp = fopen("./data/naive_Adam.txt", "w");
+    if (!fp) {
+        fprintf(stderr, "Failed to open file.\n");
+        return;
+    }
+
+    Adam<RowVectorXd> adam(lr, beta1, beta2);
+    for (int i = 0; i < 30; ++i) {
+        std::fprintf(fp, "%lf %lf\n", x(0), x(1));
+        
+        dx(0) = df_x(x(0));
+        dx(1) = df_y(x(1));
+
+        adam.update(x, dx);
+    }
+
+    fclose(fp);
+}
+
+int main() {
+    runSGD();
+    runMomentum();
+    runAdaGrad();
+    runAdam();
+    plotGpFile("./plot_optimization_naive.gp");
+
+    return 0;   
+}
