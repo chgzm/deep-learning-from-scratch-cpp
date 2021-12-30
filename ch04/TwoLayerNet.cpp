@@ -4,9 +4,9 @@
 #include <iostream>
 
 TwoLayerNet::TwoLayerNet(std::size_t inputSize, std::size_t hiddenSize, std::size_t outputSize) {
-    W1_ = MatrixXd::Random(inputSize, hiddenSize) * WEIGHT_INIT_STD;
+    W1_ = createMatrixXdRandNormal(inputSize, hiddenSize) * WEIGHT_INIT_STD;
     b1_ = RowVectorXd::Zero(hiddenSize);
-    W2_ = MatrixXd::Random(hiddenSize, outputSize) * WEIGHT_INIT_STD;
+    W2_ = createMatrixXdRandNormal(hiddenSize, outputSize) * WEIGHT_INIT_STD;
     b2_ = RowVectorXd::Zero(outputSize);
 
     dW1_ = MatrixXd::Zero(inputSize, hiddenSize);

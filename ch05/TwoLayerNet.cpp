@@ -7,6 +7,9 @@ TwoLayerNet::TwoLayerNet(std::size_t inputSize, std::size_t hiddenSize, std::siz
     R_  = Relu();
     A2_ = Affine(hiddenSize,  outputSize);
     S_  = SoftmaxWithLoss();
+
+    A1_.W_ *= 0.01;
+    A2_.W_ *= 0.01;
 }
 
 void TwoLayerNet::gradient(const MatrixXd& X, const VectorXi& t) {
